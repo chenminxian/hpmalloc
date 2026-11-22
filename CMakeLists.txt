@@ -40,6 +40,10 @@ function(hpmalloc_common_options target)
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
     target_compile_options(${target} PRIVATE
         -O3
+        -flto
+        -march=native
+        -mtune=native
+        -DNDEBUG
         -Wall
         -Wextra
         -fno-rtti
@@ -60,6 +64,7 @@ set_target_properties(hpmalloc PROPERTIES
     SOVERSION 1
     OUTPUT_NAME hpmalloc)
 target_link_options(hpmalloc PRIVATE
+    -Wl,-O3
     -Wl,-z,now
     -Wl,-z,relro
     -Wl,-z,nodelete)
@@ -85,6 +90,7 @@ if(HPM_BUILD_BENCH)
     target_link_libraries(hpmalloc_bench PRIVATE Threads::Threads ${CMAKE_DL_LIBS})
     target_compile_options(hpmalloc_bench PRIVATE
         -O3 -DNDEBUG -Wall -Wextra
+        -march=native -mtune=native
         -fno-builtin-malloc -fno-builtin-calloc
         -fno-builtin-realloc -fno-builtin-free)
 endif()

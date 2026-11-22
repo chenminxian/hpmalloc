@@ -16,7 +16,7 @@
 | hpmalloc 编译器 | GCC 16.2.1 | GCC 11.4.0 (Ubuntu 22.04) |
 | CMake / Ninja | CMake 4.x / Ninja 1.13 | CMake 3.22.1 / Ninja 1.10.1 |
 | jemalloc | 5.4.0 | 5.2.1 |
-| tcmalloc | 4.6.10 | 4.5.9 |
+| tcmalloc | gperftools 2.19.1 | 4.5.9 |
 | mimalloc | 3.5 | 2.0 |
 | THP | `always` | `always` |
 | CPU governor | `performance` | `performance` |

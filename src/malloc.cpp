@@ -4,6 +4,7 @@
 #include "allocator_internal.hpp"
 
 #include <cerrno>
+#include <cstdlib>
 #include <sys/mman.h>
 
 namespace hpm
@@ -382,7 +383,8 @@ extern "C" HPM_EXPORT void *calloc(size_t nmemb, size_t size)
     return calloc_impl(nmemb, size);
 }
 
-extern "C" HPM_EXPORT void *realloc(void *p, size_t n)
+// macro FUNCTION_NOINLINE prevents realloc being inlined in reallocarray when using g++
+extern "C" FUNCTION_NOINLINE HPM_EXPORT void *realloc(void *p, size_t n)
 {
     return realloc_impl(p, n);
 }
@@ -395,7 +397,12 @@ extern "C" HPM_EXPORT void *reallocarray(void *p, size_t nmemb, size_t size)
         errno = ENOMEM;
         return nullptr;
     }
-    return realloc_impl(p, total);
+    // Delegate to the process-resolved realloc (as glibc's reallocarray does)
+    // so a pointer owned by a higher-priority allocator,
+    // such as Chromium's allocator in Electron/VSCode, is reallocated by that same allocator.
+    // Keep this call preemptible (PLT/GOT); do not bind it locally.
+    // Macro CALLPOINT_NOINLINE prevents realloc being inlined as hpm::realloc_impl when using clang++
+    CALLPOINT_NOINLINE return std::realloc(p, total);
 }
 
 extern "C" HPM_EXPORT void *memalign(size_t alignment, size_t size)

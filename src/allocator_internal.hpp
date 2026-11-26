@@ -26,6 +26,16 @@
 #include <cstring>
 #include <sched.h>
 
+#if defined(__clang__)
+#define FUNCTION_NOINLINE
+#define CALLPOINT_NOINLINE [[clang::noinline]]
+#elif defined(__GNUC__)
+#define FUNCTION_NOINLINE __attribute__((noipa))
+#define CALLPOINT_NOINLINE
+#else
+#error "unsupported compiler"
+#endif
+
 #if defined(__GNUC__) || defined(__clang__)
 #define HPM_EXPORT __attribute__((visibility("default")))
 #define HPM_TLS __attribute__((tls_model("initial-exec")))

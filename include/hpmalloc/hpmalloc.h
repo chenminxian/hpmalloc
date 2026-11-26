@@ -11,7 +11,7 @@ extern "C"
 
 #define HPMALLOC_VERSION_MAJOR "0"
 #define HPMALLOC_VERSION_MINOR "1"
-#define HPMALLOC_VERSION_PATCH "0"
+#define HPMALLOC_VERSION_PATCH "1"
 
     typedef struct hpm_stats
     {

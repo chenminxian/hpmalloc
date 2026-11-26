@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(hpmalloc VERSION 0.1.0 LANGUAGES CXX)
+project(hpmalloc VERSION 0.1.1 LANGUAGES CXX)
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
@@ -61,7 +61,7 @@ set_source_files_properties(${HPMALLOC_CORE_SOURCES}
 set_source_files_properties(src/cxx_new.cpp PROPERTIES COMPILE_OPTIONS "-fexceptions")
 set_target_properties(hpmalloc PROPERTIES
     VERSION ${PROJECT_VERSION}
-    SOVERSION 1
+    SOVERSION ${PROJECT_VERSION_MAJOR}
     OUTPUT_NAME hpmalloc)
 target_link_options(hpmalloc PRIVATE
     -Wl,-O3
